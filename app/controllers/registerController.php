@@ -22,11 +22,12 @@
         public function create(){
 
             if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST"){
-                if(isset($_POST["name"]) && isset($_POST["sur_name"]) && isset($_POST["email"]) && $_POST["password"]) {
+                if(isset($_POST["name"]) && isset($_POST["sur_name"]) && isset($_POST["email"]) && $_POST["password"] && isset($_POST["role"])) {
                     $datos = array(
                         "name" => $_POST["name"],
                         "sur_name" => $_POST["sur_name"],
                         "email" => $_POST["email"],
+                        "role" => $_POST["role"],
                         "password" => password_hash($_POST["password"], PASSWORD_BCRYPT)
                     );
                     
@@ -35,6 +36,21 @@
                     $usuario->sur_name = $datos["sur_name"];
                     $usuario->email = $datos["email"];
                     $usuario->password = $datos["password"];
+                    $usuario->role = $datos["role"];
+
+                    if(!($datos["role"] == "USER_ROLE" || $datos["role"] == "PROFESIONAL_ROLE")){
+                        $json = array(
+                            "ok" => false,
+                            "status" =>403,
+                            "error" => 'Forbidden.',
+                            "errores" => [
+                                "message" => 'No esta authorizado.'
+                            ]
+                        );
+    
+                        echo json_encode($json, true);
+                        return;
+                    }
 
                     if($usuario->one()):
                         $json = array(
