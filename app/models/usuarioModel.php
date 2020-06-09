@@ -8,6 +8,7 @@
         public $email;
         public $role;
         public $password;
+        public $action;
 
         /**
          *
@@ -35,13 +36,14 @@
          * Agrega un Usuario
          */
         public function add(){
-            $sql = 'INSERT INTO usuarios(name,sur_name,email,password) VALUES(:name,:sur_name,:email,:password)';
+            $sql = 'INSERT INTO usuarios(name,sur_name,role,email,password) VALUES(:name,:sur_name,:role,:email,:password)';
 
             $user =
             [
                 'name'      =>  $this->name,
                 'sur_name'  =>  $this->sur_name,
                 'email'     =>  $this->email,
+                'role'      =>  $this->role,
                 'password'  =>  $this->password
             ];
 
@@ -65,4 +67,36 @@
             }
         }
 
+        /**
+         * Actualizar un Usuario
+         */
+        public function update(){
+            $sql = 'UPDATE usuarios SET name=:name, sur_name=:sur_name, role=:role, email=:email WHERE id=:id';
+            $data =
+            [
+                'id'            =>  $this->id,
+                'name'          =>  $this->name,
+                'email'         =>  $this->email,
+                'sur_name'      =>  $this->sur_name,
+                'role'          =>  $this->role
+            ];
+            try{
+                return (parent::query($sql, $data)) ? true : false;
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
+
+        /**
+         * Eliminar un Usuario
+         */
+        public function delete(){
+            $sql = 'UPDATE usuarios SET action=:action WHERE id=:id';
+
+            try{
+                return (parent::query($sql, ['action' => 1, 'id' => $this->id])) ? true : false;
+            } catch (Exception $e) {
+                throw $e;
+            }
+        }
     }

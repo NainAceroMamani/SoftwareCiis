@@ -5,7 +5,7 @@
     }
 
     function get_sitename(){
-        return 'Nuami Framework';
+        return 'Ciis Software';
     }
 
     function now(){

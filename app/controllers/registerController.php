@@ -24,7 +24,7 @@
             if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST"){
                 if(isset($_POST["name"]) && isset($_POST["sur_name"]) && isset($_POST["email"]) && $_POST["password"]) {
                     $datos = array(
-                        "name" => $_POST["email"],
+                        "name" => $_POST["name"],
                         "sur_name" => $_POST["sur_name"],
                         "email" => $_POST["email"],
                         "password" => password_hash($_POST["password"], PASSWORD_BCRYPT)

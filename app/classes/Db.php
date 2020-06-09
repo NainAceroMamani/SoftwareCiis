@@ -10,6 +10,7 @@
 
         public function __construct()
         {
+            $this->host    = IS_LOCAL ? LDB_HOST : DB_HOST;
             $this->engine  = IS_LOCAL ? LDB_ENGINE : DB_ENGINE;
             $this->name    = IS_LOCAL ? LDB_NAME : DB_NAME;
             $this->user    = IS_LOCAL ? LDB_USER : DB_USER;
