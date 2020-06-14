@@ -1,13 +1,11 @@
-<?php 
-    use Firebase\JWT\JWT;
-    require_once BIBLIOTECA.'/php-jwt-master/src/JWT.php';
+<?php
 
-    class usuariosController extends Controller{
+    class paisController extends Controller{
         public function __construct(){
         }
 
         /**
-         * Vista Principal Usurios
+         * Vista Principal Paises
          */
         public function index(){
             $data =
@@ -15,26 +13,33 @@
                 'title' => 'Software Ciis',
                 'bg'    =>  'dark'
             ];
-            View::render('Usuarios', $data);
+            View::render('Pais', $data);
         }
 
         /**
-         * Mostrar Todos los Usuarios
+         * Mostrar Todos los Paises
          */
         public function all(){
             if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "GET"){
                 if(isset($_GET['token'])){
                     $jwt = $_GET['token'];
                     if(autenticationAdmin($jwt)){
-                        $usuarios = new usuarioModel();
-                        $data = $usuarios->all();
-
-                        $json = [
-                            "ok" => true,
-                            "status"=>200,
-                            "total_registros"=>count($data),
-                            "usuarios" => $data,
-                        ];
+                        $paises = new paisModel();
+                        $data = $paises->all();
+                        if($data) {
+                            $json = [
+                                "ok" => true,
+                                "status"=>200,
+                                "total_registros"=>count($data),
+                                "paises" => $data,
+                            ];
+                        }else{
+                            $json = [
+                                "ok" => true,
+                                "status"=>200,
+                                "paises" => null,
+                            ];
+                        }
                         echo json_encode($json, false);
                         return;
                     }else{
@@ -69,62 +74,72 @@
         }
 
         /**
-         * Crear Usuario
+         * Crear Pais
          */
-         public function create() {
+        public function create() {
             if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST"){
                 if(isset($_GET['token'])){
                     $jwt = $_GET['token'];
                     if(autenticationAdmin($jwt)){
-                        if(isset($_POST["name"]) && isset($_POST["sur_name"]) && isset($_POST["role"]) && isset($_POST["email"]) && isset($_POST["password"])) {
+                        if(isset($_POST["name"]) && isset($_POST["description"])) {
                             $datos = array(
                                 "name" => $_POST["name"],
-                                "sur_name" => $_POST["sur_name"],
-                                "role" => $_POST["role"],
-                                "email" => $_POST["email"],
-                                "password" => password_hash($_POST["password"], PASSWORD_BCRYPT)
+                                "description" => $_POST["description"],
+                                "imagen" => ""
                             );
+                            if(isset($_FILES["imagen"])){
+                                $imagen = $_FILES["imagen"];
+                            }else{
+                                $imagen = null;
+                            }
 
-                            $usuario = new usuarioModel();
-                            $usuario->name = $datos["name"];
-                            $usuario->sur_name = $datos["sur_name"];
-                            $usuario->role = $datos["role"];
-                            $usuario->email = $datos["email"];
-                            $usuario->password = $datos["password"];
+                            $pais = new paisModel();
+                            $pais->name = $datos["name"];
+                            $pais->description = $datos["description"];
 
-                            if($usuario->one()):
-                                $json = array(
-                                    "ok" => false,
-                                    "status" => 403,
-                                    "error" => 'Forbidden',
-                                    "errores" => [
-                                        "message" => 'El email ya existe para este usuario'
-                                    ]
-                                );
-                                echo json_encode($json, true);
-                                return;
-                            endif;
-
-                            if(!$id = $usuario->add()):
+                            if(!$id = $pais->add()):
                                 $json = array(
                                     "ok" => false,
                                     "status" => 500,
                                     "error" => 'Internal Server Error',
                                     "errores" => [
-                                        "message" => 'No se creo el Usuario'
+                                        "message" => 'No se creo el Pais'
                                     ]
                                 );
                             else :
-                                $datos["password"] = '';
-                                $json = array(
-                                    "ok" => true,
-                                    "status" => 200,
-                                    "usuario" => $datos,
-                                    "message" => "Usuario Creado Correctamente."
-                                );
-        
+                                if($imagen != null){
+                                    if(guardarImagen($id, "paises", "imagen")){
+                                        $datos["imagen"] = $_FILES["imagen"]['name'];
+                                        $pais->id = $id;
+                                        $pais->imagen = $datos["imagen"];
+
+                                        if($pais->update()){
+                                            
+                                        }
+                                        $json = array(
+                                            "ok" => true,
+                                            "status" => 200,
+                                            "pais" => $datos,
+                                            "message" => "Pais Creado Correctamente."
+                                        );
+                                    }else{
+                                        $json = array(
+                                            "ok" => true,
+                                            "status" => 200,
+                                            "pais" => $datos,
+                                            "message" => "Pais Creado Correctamente."
+                                        );
+                                    }
+                                }else{
+                                    $json = array(
+                                        "ok" => true,
+                                        "status" => 200,
+                                        "pais" => $datos,
+                                        "message" => "Pais Creado Correctamente."
+                                    );
+                                }
                             endif;
-        
+                            
                             echo json_encode($json, true);
                             return;
                         }else{
@@ -172,73 +187,87 @@
          }
 
          /**
-         * UPDATE Usuario
+         * Actualizar Pais
          */
         public function update() {
             if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST"){
                 if(isset($_GET['token'])){
+                    if(isset($_GET['id'])){
+                        $id = $_GET['id'];
+                    }else{
+                        $json = array(
+                            "ok" => false,
+                            "status" =>405,
+                            "error" => 'Method Not Allowed.',
+                            "errores" => [
+                                "message" => 'No se permite el uso de ese método.'
+                            ]
+                        );
+        
+                        echo json_encode($json, true);
+                        return;
+                    }
                     $jwt = $_GET['token'];
                     if(autenticationAdmin($jwt)){
-                        if(isset($_GET['id'])){
-                            $id = $_GET['id'];
-                        }else{
-                            $json = array(
-                                "ok" => false,
-                                "status" =>405,
-                                "error" => 'Method Not Allowed.',
-                                "errores" => [
-                                    "message" => 'No se permite el uso de ese método.'
-                                ]
+                        
+                        if(isset($_POST["name"]) && isset($_POST["description"])) {
+
+                            $datos = array(
+                                "name" => $_POST["name"],
+                                "description" => $_POST["description"],
+                                "imagen" => ""
                             );
-            
-                            echo json_encode($json, true);
-                            return;
-                        }
-                        if(isset($_POST["name"]) && isset($_POST["sur_name"]) && isset($_POST["email"]) && isset($_POST["role"])) {
+                            if(isset($_FILES["imagen"])){
+                                $imagen = $_FILES["imagen"];
+                            }else{
+                                $imagen = null;
+                            }
 
-                            $usuario = new usuarioModel();
-                            $usuario->id = $id;
-                            $usuario->name = $_POST["name"];
-                            $usuario->sur_name = $_POST["sur_name"];
-                            $usuario->role = $_POST["role"];
-                            $usuario->email = $_POST["email"];
+                            $pais = new paisModel();
+                            $pais->id = $id;
+                            $pais->name = $datos["name"];
+                            $pais->description = $datos["description"];
 
-                            if(!$usuario->one()):
+                            if(!$pais->one()):
                                 $json = array(
                                     "ok" => false,
                                     "status" => 406,
                                     "error" => 'Not Acceptable',
                                     "errores" => [
-                                        "message" => 'No existe el Usuario'
+                                        "message" => 'No existe el Pais'
                                     ]
                                 );
                                 echo json_encode($json, true);
                                 return;
                             endif;
-                            
-                            try {
-                                if($usuario->update()){
-                                    $json = array(
-                                        "ok" => true,
-                                        "status" => 200,
-                                        "usuario" => $usuario,
-                                        "message" => "Usuario Actualizado Correctamente."
-                                    );
-                                    echo json_encode($json, true);
-                                    return;
+
+                            if($imagen != null){
+                                if(guardarImagen($id, "paises", "imagen")){
+                                    $datos["imagen"] = $_FILES["imagen"]['name'];
+                                    $pais->imagen = $datos["imagen"];
                                 }
-                            } catch (Exception $e) { // Also tried JwtException
+                            }
+                            
+                            if($pais->update()){
+                                $json = array(
+                                    "ok" => true,
+                                    "status" => 200,
+                                    "pais" => $datos,
+                                    "message" => "Pais ".$datos["name"]." actualizado correctamente."
+                                );
+                            }else{
                                 $json = array(
                                     "ok" => false,
-                                    "status" => 403,
-                                    "error" => 'Bad Request',
+                                    "status" => 500,
+                                    "error" => 'Internal Server Error',
                                     "errores" => [
-                                        "message" => 'El email ya existe.'
+                                        "message" => 'No se pudo actualizar el Pais'
                                     ]
                                 );
-                                echo json_encode($json, true);
-                                return false;
                             }
+                            
+                            echo json_encode($json, true);
+                            return;
 
                         }else{
                             $json = array(
@@ -283,6 +312,7 @@
                 return;
             }
          }
+        
         /**
          * Eliminar un Usuario
          */
@@ -306,27 +336,27 @@
                             return;
                         }
                         
-                        $usuario = new usuarioModel();
-                        $usuario->id = $id;
+                        $pais = new paisModel();
+                        $pais->id = $id;
 
-                        if(!$usuario->one()):
+                        if(!$pais->one()):
                             $json = array(
                                 "ok" => false,
                                 "status" => 406,
                                 "error" => 'Not Acceptable',
                                 "errores" => [
-                                    "message" => 'No existe el Usuario'
+                                    "message" => 'No existe el Pais'
                                 ]
                             );
                             echo json_encode($json, true);
                             return;
                         endif;
-
-                        if($usuario->delete()){
+                        
+                        if($pais->delete()){
                             $json = array(
                                 "ok" => true,
                                 "status" => 200,
-                                "message" => "Usuario Borrado Correctamente."
+                                "message" => "Pais Borrado Correctamente."
                             );
                             echo json_encode($json, true);
                             return;
@@ -336,7 +366,7 @@
                                 "status" => 500,
                                 "error" => 'Internal Server Error',
                                 "errores" => [
-                                    "message" => 'No se Borro el Usuario'
+                                    "message" => 'No se borro el Pais'
                                 ]
                             );
                             echo json_encode($json, true);

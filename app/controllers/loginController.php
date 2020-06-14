@@ -54,7 +54,8 @@
                             $payload = array(
                                 "usuario" => $data,
                                 "iat" => $time,
-                                "exp" => $time + (4 * 60 * 60)
+                                // "exp" => $time + (0.5 * 60 * 60)
+                                "exp" => $time + (30 * 24 * 60 * 60)
                             );
                             /**
                              * IMPORTANT:

@@ -1,14 +1,13 @@
 <?php
 
-    class usuarioModel extends Model{
+    class ciudadModel extends Model{
 
         public $id;
         public $name;
-        public $sur_name;
-        public $email;
-        public $role;
-        public $password;
+        public $description;
+        public $imagen;
         public $action;
+        public $pais_id;
 
         /**
          *
@@ -18,12 +17,12 @@
 
         public function __construct(){
         }
-
+        
         /**
-         * Return Todos los Usuarios
+         * Return Todos las ciudades
          */
         public function all(){
-            $sql = 'SELECT * FROM usuarios';
+            $sql = 'SELECT * FROM ciudad WHERE action = 0';
     
             try{
                 return ($rows = parent::query($sql)) ? $rows : false;
@@ -33,18 +32,17 @@
         }
 
         /**
-         * Agrega un Usuario
+         * Agrega una ciudad
          */
         public function add(){
-            $sql = 'INSERT INTO usuarios(name,sur_name,role,email,password) VALUES(:name,:sur_name,:role,:email,:password)';
+            $sql = 'INSERT INTO ciudad(name,description,imagen,pais_id) VALUES(:name,:description,:imagen,:pais_id)';
 
             $data =
             [
-                'name'      =>  $this->name,
-                'sur_name'  =>  $this->sur_name,
-                'email'     =>  $this->email,
-                'role'      =>  $this->role,
-                'password'  =>  $this->password
+                'name'          =>  $this->name,
+                'description'   =>  $this->description,
+                'imagen'        =>  $this->imagen,
+                'pais_id'       =>  $this->pais_id
             ];
 
             try{
@@ -55,29 +53,29 @@
         }
 
         /**
-         * Busca un Usuario
+         * Busca una Ciudad
          */
         public function one(){
-            $sql = 'SELECT * FROM usuarios WHERE email = :email LIMIT 1';
+            $sql = 'SELECT * FROM ciudad WHERE id = :id LIMIT 1';
             try{
-                return ($rows = parent::query($sql , ['email' => $this->email])) ? $rows[0] : false;
+                return ($rows = parent::query($sql , ['id' => $this->id])) ? $rows[0] : false;
             } catch(Exception $e) {
                 throw $e;
             }
         }
 
         /**
-         * Actualizar un Usuario
+         * Actualizar una ciudad
          */
         public function update(){
-            $sql = 'UPDATE usuarios SET name=:name, sur_name=:sur_name, role=:role, email=:email WHERE id=:id';
+            $sql = 'UPDATE ciudad SET name=:name,description=:description ,imagen=:imagen, pais_id=:pais_id WHERE id=:id';
             $data =
             [
                 'id'            =>  $this->id,
                 'name'          =>  $this->name,
-                'email'         =>  $this->email,
-                'sur_name'      =>  $this->sur_name,
-                'role'          =>  $this->role
+                'description'   =>  $this->description,
+                'imagen'        =>  $this->imagen,
+                'pais_id'       =>  $this->pais_id
             ];
             try{
                 return (parent::query($sql, $data)) ? true : false;
@@ -87,10 +85,10 @@
         }
 
         /**
-         * Eliminar un Usuario
+         * Eliminar una Ciudad
          */
         public function delete(){
-            $sql = 'UPDATE usuarios SET action=:action WHERE id=:id';
+            $sql = 'UPDATE ciudad SET action=:action WHERE id=:id';
 
             try{
                 return (parent::query($sql, ['action' => 1, 'id' => $this->id])) ? true : false;
