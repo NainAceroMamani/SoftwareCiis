@@ -120,7 +120,7 @@
                                     "ok" => true,
                                     "status" => 200,
                                     "usuario" => $datos,
-                                    "message" => "Usuario Creado Correctamente."
+                                    "message" => "El Usuario fue Creado Correctamente."
                                 );
         
                             endif;
@@ -170,6 +170,63 @@
                 return;
             }
          }
+
+         public function one(){
+            if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "GET"){
+                if(isset($_GET['token'])){
+                    $jwt = $_GET['token'];
+                    if($id = id($jwt)){
+                        $usuario = new usuarioModel();
+                        $usuario->id = $id;
+                        if($data = $usuario->oneID()){
+                            $json = array(
+                                "ok" => true,
+                                "status" =>403,
+                                "usuario" => $data
+                            );
+                        }else{
+                            $json = array(
+                                "ok" => false,
+                                "status" =>403,
+                                "error" => 'Forbidden.',
+                                "errores" => [
+                                    "message" => 'No esta authorizado.'
+                                ]
+                            );
+                        }
+                        echo json_encode($json, false);
+                        return;
+                    }else{
+                        
+                        return;
+                    }
+                }else {
+                    $json = array(
+                        "ok" => false,
+                        "status" =>403,
+                        "error" => 'Forbidden.',
+                        "errores" => [
+                            "message" => 'No esta authorizado.'
+                        ]
+                    );
+
+                    echo json_encode($json, true);
+                    return;
+                }
+            }else{
+                $json = array(
+                    "ok" => false,
+                    "status" =>405,
+                    "error" => 'Method Not Allowed.',
+                    "errores" => [
+                        "message" => 'No se permite el uso de ese método.'
+                    ]
+                );
+
+                echo json_encode($json, true);
+                return;
+            }
+        }
 
          /**
          * UPDATE Usuario
@@ -222,7 +279,7 @@
                                         "ok" => true,
                                         "status" => 200,
                                         "usuario" => $usuario,
-                                        "message" => "Usuario Actualizado Correctamente."
+                                        "message" => "El Usuario fue Actualizado Correctamente."
                                     );
                                     echo json_encode($json, true);
                                     return;
@@ -283,6 +340,148 @@
                 return;
             }
          }
+
+         public function updateUser() {
+            if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "POST"){
+                if(isset($_GET['token'])){
+
+                    $jwt = $_GET['token'];
+                    
+                    if(!$id = id($jwt)){
+                        $json = array(
+                            "ok" => false,
+                            "status" =>403,
+                            "error" => 'Forbidden.',
+                            "errores" => [
+                                "message" => 'No esta authorizado.'
+                            ]
+                        );
+                        echo json_encode($json, true);
+                        return;    
+                    }
+                    if(autenticationValidate($jwt, $id)){
+                        
+                        if(isset($_POST["name"]) && isset($_POST["sur_name"]) && isset($_POST["email"]) 
+                                                 && isset($_POST["numero_type"]) && isset($_POST["telefono"])) {
+                            if(!$role = role($jwt)){
+                                $json = array(
+                                    "ok" => false,
+                                    "status" =>405,
+                                    "error" => 'Method Not Allowed.',
+                                    "errores" => [
+                                        "message" => 'No se permite el uso de ese método.'
+                                    ]
+                                );
+                
+                                echo json_encode($json, true);
+                                return;
+                            }
+
+                            $usuario = new usuarioModel();
+                            $usuario->id = $id;
+                            $usuario->name = $_POST["name"];
+                            $usuario->sur_name = $_POST["sur_name"];
+                            $usuario->email = $_POST["email"];
+                            $usuario->numero_type = $_POST["numero_type"];
+                            $usuario->telefono = $_POST["telefono"];
+
+                            if(isset($_FILES["imagen"])){
+                                $imagen = $_FILES["imagen"];
+                            }else{
+                                $imagen = null;
+                                if(isset($_POST["imagen"])){
+                                    $usuario->imagen = $_POST["imagen"];
+                                }
+                            }
+
+                            if($imagen != null){
+                                if(guardarImagen($id, "usuarios", "imagen")){
+                                    $usuario->imagen = $_FILES["imagen"]['name'];
+                                }
+                            }
+
+                            if(!$usuario->one()):
+                                $json = array(
+                                    "ok" => false,
+                                    "status" => 406,
+                                    "error" => 'Not Acceptable',
+                                    "errores" => [
+                                        "message" => 'No existe el Usuario'
+                                    ]
+                                );
+                                echo json_encode($json, true);
+                                return;
+                            endif;
+                            
+                            try {
+                                if($usuario->updatePublico()){
+                                    $json = array(
+                                        "ok" => true,
+                                        "status" => 200,
+                                        "usuario" => $usuario,
+                                        "message" => "El Usuario fue Actualizado Correctamente."
+                                    );
+                                    echo json_encode($json, true);
+                                    return;
+                                }
+                            } catch (Exception $e) { // Also tried JwtException
+                                $json = array(
+                                    "ok" => false,
+                                    "status" => 403,
+                                    "error" => 'Bad Request',
+                                    "errores" => [
+                                        "message" => 'El email ya existe.'
+                                    ]
+                                );
+                                echo json_encode($json, true);
+                                return false;
+                            }
+
+                        }else{
+                            $json = array(
+                                "ok" => false,
+                                "status" =>415,
+                                "error" => 'Unsupported Media Typ.',
+                                "errores" => [
+                                    "message" => 'El tipo de archivo que se ha recibido es distinto al que se esperaba.'
+                                ]
+                            );
+        
+                            echo json_encode($json, true);
+                            return;
+                        }
+                    }else{
+
+                        return;
+                    }
+                }else {
+                    $json = array(
+                        "ok" => false,
+                        "status" =>403,
+                        "error" => 'Forbidden.',
+                        "errores" => [
+                            "message" => 'No esta authorizado.'
+                        ]
+                    );
+
+                    echo json_encode($json, true);
+                    return;
+                }
+            }else{
+                $json = array(
+                    "ok" => false,
+                    "status" =>405,
+                    "error" => 'Method Not Allowed.',
+                    "errores" => [
+                        "message" => 'No se permite el uso de ese método.'
+                    ]
+                );
+
+                echo json_encode($json, true);
+                return;
+            }
+         }
+
         /**
          * Eliminar un Usuario
          */
@@ -326,7 +525,7 @@
                             $json = array(
                                 "ok" => true,
                                 "status" => 200,
-                                "message" => "Usuario Borrado Correctamente."
+                                "message" => "El Usuario fue Borrado Correctamente."
                             );
                             echo json_encode($json, true);
                             return;

@@ -6,13 +6,13 @@
 
     define('LANG','es');                                                            /* Language */
 
-    define('BASEPATH', IS_LOCAL ? '/SoftwareCiis/' : '__EL BASEPATH EN PRODUCCIÓN__');
+    define('BASEPATH', IS_LOCAL ? '/ciis2020/' : '__EL BASEPATH EN PRODUCCIÓN__');
 
     define('AUTH_SALT', 'SoftwareCiis');                                        /* Sal del Sistema */
 
-    define('PORT','8080');
+    define('PORT','80');
 
-    define('URL', IS_LOCAL ? 'http://127.0.0.1:'.PORT.'/SoftwareCiis/' : '__URL EN PRODUCCIÓN_');
+    define('URL', IS_LOCAL ? 'http://127.0.0.1:'.PORT.'/ciis2020/' : 'http://192.241.133.238/sistemas/ciis/SoftwareCiis/');
 
     // rutas de directorios y archivos =>
 
@@ -52,10 +52,10 @@
     // credenciales base de datos   =>  producción
     define('DB_ENGINE' ,   'mysql');
     define('DB_HOST'   ,   'localhost');
-    define('DB_NAME'   ,   '__REMOTE DB__');
-    define('DB_USER'   ,   '__REMOTE DB__');
-    define('DB_PASS'   ,   '__REMOTE DB__');
-    define('DB_CHARSET',   '__REMOTE CHARTSET__');
+    define('DB_NAME'   ,   'softwareciis');
+    define('DB_USER'   ,   'root');
+    define('DB_PASS'   ,   '');
+    define('DB_CHARSET',   'utf8');
 
     /**
      * Controlador Defecto

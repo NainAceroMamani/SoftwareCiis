@@ -28,7 +28,83 @@
                     "message" => 'Token Incorrecto'
                 ]
             );
-            echo json_encode($json, true);
+            echo json_encode($json, false);
+            return false;
+        }
+    }
+
+    function autenticationValidate($jwt, $id){
+        try {
+            /*
+            NOTE: This will now be an object instead of an associative array. To get
+            an associative array, you will need to cast it as such:
+            */
+            $key = SEMILLA;
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            if($decoded->usuario->id == $id){
+                return true;
+            }else{
+                $json = array(
+                    "ok" => false,
+                    "status" => 403,
+                    "error" => 'Bad Request',
+                    "errores" => [
+                        "message" => 'Token Incorrecto , No tiene Autorización.'
+                    ]
+                );
+                echo json_encode($json, false);
+                return false;
+            }
+
+        } catch (Exception $e) { // Also tried JwtException
+            $json = array(
+                "ok" => false,
+                "status" => 401,
+                "error" => 'Bad Request',
+                "errores" => [
+                    "message" => 'Token Incorrecto'
+                ]
+            );
+            echo json_encode($json, false);
+            return false;
+        }
+    }
+
+    function role($jwt){
+        try {
+            /*
+            NOTE: This will now be an object instead of an associative array. To get
+            an associative array, you will need to cast it as such:
+            */
+            $key = SEMILLA;
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            return $decoded->usuario->role;
+
+        } catch (Exception $e) { // Also tried JwtException
+            return false;
+        }
+    }
+
+    function id($jwt){
+        try {
+            /*
+            NOTE: This will now be an object instead of an associative array. To get
+            an associative array, you will need to cast it as such:
+            */
+            $key = SEMILLA;
+            $decoded = JWT::decode($jwt, $key, array('HS256'));
+            return $decoded->usuario->id;
+
+        } catch (Exception $e) { // Also tried JwtException
+            $json = array(
+                "ok" => false,
+                "status" => 401,
+                "error" => 'Bad Request',
+                "errores" => [
+                    "message" => 'Token Incorrecto'
+                ]
+            );
+            echo json_encode($json, false);
             return false;
         }
     }
@@ -52,7 +128,7 @@
                         "message" => 'Token Incorrecto , No tiene Autorización.'
                     ]
                 );
-                echo json_encode($json, true);
+                echo json_encode($json, false);
                 return false;
             }
             return $decoded;
@@ -66,7 +142,7 @@
                     "message" => 'Token Incorrecto.'
                 ]
             );
-            echo json_encode($json, true);
+            echo json_encode($json, false);
             return false;
         }
     }
