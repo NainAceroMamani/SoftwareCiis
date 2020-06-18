@@ -288,7 +288,7 @@
                                 <li><a href="#"><i class="ti-settings"></i> Account Setting</a></li>
                                 <li role="separator" class="divider"></li>
                                 <li><a href="http://192.241.133.238/sistemas/ciis/SoftwareCiis/login"><i class="fa fa-power-off"></i> Logout</a></li>
-                            </ul
+                            </ul>
                         </div>
                     </li>
                 </ul>
