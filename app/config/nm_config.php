@@ -34,6 +34,7 @@
 
     define('ASSETS',        URL.'assets/');
     define('CSS',           ASSETS.'css/');
+    define('SCSS',          ASSETS.'scss/');
     define('FAVICON',       ASSETS.'favicon/');
     define('FONTS',         ASSETS.'fonts/');
     define('IMAGES',        ASSETS.'images/');

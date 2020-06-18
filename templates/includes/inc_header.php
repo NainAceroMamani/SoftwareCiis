@@ -67,7 +67,7 @@
                                 <ul id="nav" class="nav menu navbar-nav" style="letter-spacing:-0.1px">
                                     <li class=" active"><a href="/"><i
                                                 class="fa fa-home"></i>Inicio</a></li>
-                                    <li><a href="events.html"><i class="fa fa-calendar"></i>Actividades</a>
+                                    <li><a href="#"><i class="fa fa-calendar"></i>Actividades</a>
                                         <ul class="dropdown">
                                             <li><a href="#">XVII POSTMASTER</a>
                                             </li>
@@ -77,7 +77,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="courses.html"><i
+                                    <li><a href="#"><i
                                                 class="fa fa-institution"></i>PONENCIAS</a>
                                         <ul class="dropdown">
                                             <li><a href="#">PONENTES</a>
@@ -86,9 +86,9 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="events.html"><i class="fa fa-desktop"></i>TALLERES</a>
+                                    <li><a href="#"><i class="fa fa-desktop"></i>TALLERES</a>
                                     </li>
-                                    <li><a href="events.html"><i class="fa fa-bullhorn"></i>CONCURSOS</a>
+                                    <li><a href="#"><i class="fa fa-bullhorn"></i>CONCURSOS</a>
                                         <ul class="dropdown">
                                             <li><a href="#">PROGRAMACIÓN</a>
                                             </li>
@@ -98,7 +98,7 @@
                                             </li>
                                         </ul>
                                     </li>
-                                    <li><a href="events.html"><i
+                                    <li><a href="#"><i
                                                 class="fa fa-suitcase"></i>EVENTOS ANTERIORES</a>
                                         <ul class="dropdown">
                                             <li><a href="https://ciistacna.com/2019/">2019 - XX CIIS</a>
