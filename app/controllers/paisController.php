@@ -120,14 +120,14 @@
                                             "ok" => true,
                                             "status" => 200,
                                             "pais" => $datos,
-                                            "message" => "Pais Creado Correctamente."
+                                            "message" => "El Pais fue Creado Correctamente."
                                         );
                                     }else{
                                         $json = array(
                                             "ok" => true,
                                             "status" => 200,
                                             "pais" => $datos,
-                                            "message" => "Pais Creado Correctamente."
+                                            "message" => "El Pais fue Creado Correctamente."
                                         );
                                     }
                                 }else{
@@ -135,7 +135,7 @@
                                         "ok" => true,
                                         "status" => 200,
                                         "pais" => $datos,
-                                        "message" => "Pais Creado Correctamente."
+                                        "message" => "El Pais fue Creado Correctamente."
                                     );
                                 }
                             endif;
@@ -253,7 +253,7 @@
                                     "ok" => true,
                                     "status" => 200,
                                     "pais" => $datos,
-                                    "message" => "Pais ".$datos["name"]." actualizado correctamente."
+                                    "message" => "El Pais ".$datos["name"]." fue actualizado correctamente."
                                 );
                             }else{
                                 $json = array(
@@ -356,7 +356,7 @@
                             $json = array(
                                 "ok" => true,
                                 "status" => 200,
-                                "message" => "Pais Borrado Correctamente."
+                                "message" => "El Pais fue Borrado Correctamente."
                             );
                             echo json_encode($json, true);
                             return;

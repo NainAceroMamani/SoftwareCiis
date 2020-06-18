@@ -10,7 +10,7 @@
 
     define('AUTH_SALT', 'SoftwareCiis');                                        /* Sal del Sistema */
 
-    define('PORT','8080');
+    define('PORT','80');
 
     define('URL', IS_LOCAL ? 'http://127.0.0.1:'.PORT.'/SoftwareCiis/' : '__URL EN PRODUCCIÓN_');
 
@@ -52,10 +52,10 @@
     // credenciales base de datos   =>  producción
     define('DB_ENGINE' ,   'mysql');
     define('DB_HOST'   ,   'localhost');
-    define('DB_NAME'   ,   '__REMOTE DB__');
-    define('DB_USER'   ,   '__REMOTE DB__');
-    define('DB_PASS'   ,   '__REMOTE DB__');
-    define('DB_CHARSET',   '__REMOTE CHARTSET__');
+    define('DB_NAME'   ,   'softwareciis');
+    define('DB_USER'   ,   'root');
+    define('DB_PASS'   ,   '');
+    define('DB_CHARSET',   'utf8');
 
     /**
      * Controlador Defecto

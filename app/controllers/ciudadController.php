@@ -20,7 +20,7 @@
             if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "GET"){
                 if(isset($_GET['token'])){
                     $jwt = $_GET['token'];
-                    if(autenticationAdmin($jwt)){
+                    if(autentication($jwt)){
                         $ciudades = new ciudadModel();
                         $data = $ciudades->all();
                         if($data) {
@@ -28,7 +28,7 @@
                                 "ok" => true,
                                 "status"=>200,
                                 "total_registros"=>count($data),
-                                "paises" => $data,
+                                "ciudades" => $data,
                             ];
                         }else{
                             $json = [
@@ -119,14 +119,14 @@
                                             "ok" => true,
                                             "status" => 200,
                                             "pais" => $datos,
-                                            "message" => "Ciudad Creada Correctamente."
+                                            "message" => "La Ciudad Creada fue Correctamente."
                                         );
                                     }else{
                                         $json = array(
                                             "ok" => true,
                                             "status" => 200,
                                             "pais" => $datos,
-                                            "message" => "Ciudad Creada Correctamente."
+                                            "message" => "La Ciudad fue Creada Correctamente."
                                         );
                                     }
                                 }else{
@@ -134,7 +134,7 @@
                                         "ok" => true,
                                         "status" => 200,
                                         "pais" => $datos,
-                                        "message" => "Ciudad Creada Correctamente."
+                                        "message" => "La Ciudad fue Creada Correctamente."
                                     );
                                 }
                             endif;
@@ -253,7 +253,7 @@
                                     "ok" => true,
                                     "status" => 200,
                                     "pais" => $datos,
-                                    "message" => "Ciudad ".$datos["name"]." actualizado correctamente."
+                                    "message" => "LA Ciudad ".$datos["name"]." fue actualizado correctamente."
                                 );
                             }else{
                                 $json = array(
@@ -356,7 +356,7 @@
                             $json = array(
                                 "ok" => true,
                                 "status" => 200,
-                                "message" => "Ciudad Borrada Correctamente."
+                                "message" => "La Ciudad fue Borrada Correctamente."
                             );
                             echo json_encode($json, true);
                             return;
