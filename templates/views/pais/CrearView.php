@@ -38,47 +38,62 @@
             <!-- ============================================================== -->
             <!-- Bread crumb and right sidebar toggle -->
             <!-- ============================================================== -->
+
             <div class="row">
-                <div class="col-12">
-                    
-                    <div class="card">
+                <div class="col-lg-12">
+                    <div class="card ">
                         <div class="card-header bg-info">
-                            <h4 class="m-b-0 text-white">Lista de Paises</h4>
+                            <h4 class="m-b-0 text-white">Registro de Paises</h4>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table id="myTable" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>Id</th>
-                                            <th>#</th>
-                                            <th>Name</th>
-                                            <th>Description</th>
-                                            <th>País</th>
-                                            <th>Opciones</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach($data as $ciudad): ?>
-                                        <tr>
-                                            <td><?php echo $ciudad->id_ciudad ?></td>
-                                            <td>
-                                                <a href="javascript:void(0)"><img src="<?php echo UPLOADS.'ciudades/'.$ciudad->id_ciudad.'/'.$ciudad->imagen_ciudad ?>" alt="Ciudad" width="60" height="45" class="img-circle"></a>
-                                            </td>
-                                            <td><b><?php echo $ciudad->name_ciudad ?></b></td>
-                                            <td><?php echo substr($ciudad->description_ciudad, 0 , 200) ?></td>
-                                            <td><b><?php echo $ciudad->name_pais ?></b></td>
-                                            <td>    
-                                                <button type="button" class="btn btn-success btn-circle" data-toggle="modal" 
-                                                    data-target=".bs-example-modal-lg" onclick="myFunction(<?php echo $ciudad->id ?>)"><i class="fa fa-edit"></i> </button>
+                            <form action="#" class="form-horizontal" id="crearPaisform">
+                                <!--/row-->
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="control-label text-right col-md-3">Nombre</label>
+                                                <div class="col-md-9">
+                                                    <input type="text" class="form-control" name="name" id="name">
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                                <button type="button" class="btn btn-danger btn-circle" onclick="deletePais(<?php echo $ciudad->id ?>)"><i class="fa fa-times"></i> </button>
-                                            </td>
-                                        </tr>
-                                        <?php endforeach ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="control-label text-right col-md-3">Descripción</label>
+                                                <div class="col-md-9">
+                                                    <textarea class="form-control" name="description" id="description" cols="10" rows="10"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="col-md-12">
+                                            <div class="form-group row">
+                                                <label class="control-label text-right col-md-3">Imagen</label>
+                                                <div class="col-md-9">
+                                                    <input type="file" id="input-file-now" name="imagen" class="dropify" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="form-actions">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="col-md-offset-3 col-md-9">
+                                                    <button type="submit" class="btn btn-dark">Registrar</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6"> </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="url" value="<?php echo URL ?>">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -103,17 +118,17 @@
     <!-- End Page wrapper  -->
     <!-- ============================================================== -->
 
-    <?php require_once INCLUDES.'adm_footer.php'; ?>
-    <script src="<?php echo PLUGINS.'dataTable/jquery.dataTables.min.js' ?>"></script>
-    <script src="<?php echo PLUGINS.'dropify/js/dropify.min.js' ?>"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-    <script src="<?php echo JS.'modules/pais.js' ?>"></script>
-    <script>
-        $('#myTable').DataTable();
-    </script>
+<?php require_once INCLUDES.'adm_footer.php'; ?>
+<script src="<?php echo PLUGINS.'dataTable/jquery.dataTables.min.js' ?>"></script>
+<script src="<?php echo PLUGINS.'dropify/js/dropify.min.js' ?>"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+<script src="<?php echo JS.'modules/pais.js' ?>"></script>
+<script>
+    $('#myTable').DataTable();
+</script>
 
-    <script>
+<script>
         $(document).ready(function() {
             // Basic
             $('.dropify').dropify();

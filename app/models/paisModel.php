@@ -62,18 +62,30 @@
             }
         }
 
+        public function oneID(){
+            $sql = 'SELECT * FROM pais WHERE id = :id LIMIT 1';
+            try{
+                return ($rows = parent::query($sql , ['id' => $this->id])) ? $rows[0] : false;
+            } catch(Exception $e) {
+                throw $e;
+            }
+        }
+
         /**
          * Actualizar un Pais
          */
         public function update(){
-            $sql = 'UPDATE pais SET name=:name,description=:description ,imagen=:imagen WHERE id=:id';
-            $data =
-            [
-                'id'            =>  $this->id,
-                'name'          =>  $this->name,
-                'description'   =>  $this->description,
-                'imagen'        =>  $this->imagen
-            ];
+
+            if($this->imagen != null):
+                $sql = 'UPDATE pais SET name=:name,description=:description ,imagen=:imagen WHERE id=:id';
+                $data =
+                    [ 'id' => $this->id,  'name'  => $this->name, 'description' => $this->description, 'imagen' => $this->imagen ];
+            else :
+                $sql = 'UPDATE pais SET name=:name,description=:description WHERE id=:id';
+                $data =
+                    [ 'id' => $this->id, 'name' => $this->name, 'description' => $this->description ];
+            endif;
+            
             try{
                 return (parent::query($sql, $data)) ? true : false;
             } catch (Exception $e) {

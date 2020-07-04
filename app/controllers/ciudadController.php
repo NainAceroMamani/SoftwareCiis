@@ -5,12 +5,15 @@
         }
 
         public function index(){
-            $data =
-            [
-                'title' => 'Software Ciis',
-                'bg'    =>  'dark'
-            ];
+            $ciudades = new ciudadModel();
+            $data = $ciudades->all();
             View::render('Ciudad', $data);
+        }
+
+        public function crear(){
+            $pais = new paisModel();
+            $data = $pais->all();
+            View::render('Crear', $data);
         }
 
         /**

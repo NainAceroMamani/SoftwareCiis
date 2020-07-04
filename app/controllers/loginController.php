@@ -47,7 +47,6 @@
                             return;
                         }
                         if(password_verify($datos["password"], $data->password)){
-                            
                             $data->password = '';
                             $key = SEMILLA;
                             $time = time();

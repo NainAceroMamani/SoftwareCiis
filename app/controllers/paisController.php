@@ -8,12 +8,13 @@
          * Vista Principal Paises
          */
         public function index(){
-            $data =
-            [
-                'title' => 'Software Ciis',
-                'bg'    =>  'dark'
-            ];
+            $pais = new paisModel();
+            $data = $pais->all();
             View::render('Pais', $data);
+        }
+
+        public function crear(){
+            View::render('Crear');
         }
 
         /**
@@ -185,6 +186,75 @@
                 return;
             }
          }
+
+         public function one(){
+            if(isset($_SERVER["REQUEST_METHOD"]) && $_SERVER["REQUEST_METHOD"] == "GET"){
+                if(isset($_GET['token'])){
+                    $jwt = $_GET['token'];
+                    if(autenticationAdmin($jwt)){
+                        if(isset($_GET['id'])){
+                            $id = $_GET['id'];
+                        }else{
+                            $json = array(
+                                "ok" => false,
+                                "status" =>405,
+                                "error" => 'Method Not Allowed.',
+                                "errores" => [
+                                    "message" => 'No se permite el uso de ese método.'
+                                ]
+                            );
+            
+                            echo json_encode($json, true);
+                            return;
+                        }
+                        $pais = new paisModel();
+                        $pais->id = $id;
+                        $data = $pais->one();
+                        if($data) {
+                            $json = [
+                                "ok" => true,
+                                "status"=>200,
+                                "pais" => $data,
+                            ];
+                        }else{
+                            $json = [
+                                "ok" => true,
+                                "status"=>200,
+                                "paises" => null,
+                            ];
+                        }
+                        echo json_encode($json, false);
+                        return;
+                    }else{
+                        return;
+                    }
+                }else {
+                    $json = array(
+                        "ok" => false,
+                        "status" =>403,
+                        "error" => 'Forbidden.',
+                        "errores" => [
+                            "message" => 'No esta authorizado.'
+                        ]
+                    );
+
+                    echo json_encode($json, true);
+                    return;
+                }
+            }else{
+                $json = array(
+                    "ok" => false,
+                    "status" =>405,
+                    "error" => 'Method Not Allowed.',
+                    "errores" => [
+                        "message" => 'No se permite el uso de ese método.'
+                    ]
+                );
+
+                echo json_encode($json, true);
+                return;
+            }
+        }
 
          /**
          * Actualizar Pais

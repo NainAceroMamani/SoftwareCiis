@@ -138,7 +138,5 @@
     <script src="<?php echo JS.'bootstrap-filestyle.min.js' ?>"></script>
     <!-- Countdown JS-->
     <script src="<?php echo JS.'jquery.countdown.min.js' ?>"></script>
-
-
 </body>
 </html>

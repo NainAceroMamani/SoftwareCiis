@@ -22,7 +22,9 @@
          * Return Todos las ciudades
          */
         public function all(){
-            $sql = 'SELECT * FROM ciudad WHERE action = 0';
+            $sql = 'SELECT c.id as id_ciudad, c.name as name_ciudad, c.description as description_ciudad, c.imagen as imagen_ciudad,
+                p.id as pais_id , p.name as name_pais
+                FROM ciudad as c INNER JOIN pais as p ON c.pais_id = p.id WHERE c.action = 0';
     
             try{
                 return ($rows = parent::query($sql)) ? $rows : false;

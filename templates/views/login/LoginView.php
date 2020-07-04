@@ -43,33 +43,30 @@
     <section id="wrapper" class="login-register login-sidebar" style="background-image:url('<?php echo IMAGES."background/login-register.jpg" ?>');">
         <div class="login-box card">
             <div class="card-body">
-                <form class="form-horizontal form-material" id="loginform" action="index.html">
+                <form class="form-horizontal form-material" id="loginform">
                     <a href="javascript:void(0)" class="text-center db"><img src="<?php echo IMAGES.'logo-icon.png' ?>" alt="Home" /><br/>
                     <img src="<?php echo IMAGES.'logo-text.png' ?>" alt="Home" /></a>
                     <div class="form-group m-t-40">
                         <div class="col-xs-12">
-                            <input class="form-control" type="text" required="" placeholder="Username">
+                            <input class="form-control" type="text" required="" name="email" placeholder="Email">
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-xs-12">
-                            <input class="form-control" type="password" required="" placeholder="Password">
+                            <input class="form-control" type="password" required="" name="password" placeholder="Password">
                         </div>
                     </div>
                     <div class="form-group row">
                         <div class="col-md-12">
                             <div class="checkbox checkbox-primary pull-left p-t-0">
-                                <input id="checkbox-signup" type="checkbox" class="filled-in chk-col-light-blue">
+                                <input id="checkbox-signup" name="checkbox" type="checkbox" class="filled-in chk-col-light-blue">
                                 <label for="checkbox-signup"> Remember me </label>
                             </div>
                             <a href="javascript:void(0)" id="to-recover" class="text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Forgot pwd?</a> </div>
                     </div>
                     <div class="form-group text-center m-t-20">
                         <div class="col-xs-12">
-                            <!-- <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" type="submit">Log In</button> -->
-                            <a href="http://192.241.133.238/sistemas/ciis/SoftwareCiis/dashboard" class="btn btn-info btn-lg btn-block text-uppercase btn-rounded">
-                                Log In
-                            </a>
+                            <button class="btn btn-info btn-lg btn-block text-uppercase btn-rounded" type="submit">Login</button>
                         </div>
                     </div>
                     <div class="row">
@@ -79,7 +76,7 @@
                     </div>
                     <div class="form-group m-b-0">
                         <div class="col-sm-12 text-center">
-                            Don't have an account? <a href="http://192.241.133.238/sistemas/ciis/SoftwareCiis/register" class="text-primary m-l-5"><b>Sign Up</b></a>
+                            Don't have an account? <a href="<?php echo URL.'register'?>" class="text-primary m-l-5"><b>Sign Up</b></a>
                         </div>
                     </div>
                 </form>
@@ -114,6 +111,9 @@
     <!-- Bootstrap tether Core JavaScript -->
     <script src="<?php echo PLUGINS.'bootstrap/js/popper.min.js' ?>"></script>
     <script src="<?php echo PLUGINS.'bootstrap/js/bootstrap.min.js' ?>"></script>
+    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+    <script src="<?php echo JS.'login-register/login.js' ?>"></script>
     <!--Custom JavaScript -->
     <script type="text/javascript">
         $(function() {
